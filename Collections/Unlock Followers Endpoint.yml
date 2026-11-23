@@ -1,0 +1,18 @@
+info:
+  name: Unlock Followers Endpoint
+  type: http
+  seq: 12
+
+http:
+  method: GET
+  url: http://hpecds.comnetconsultores.cloud:7373/la-chocita/acceso-7k105l7a2axr5uzh/follows
+  auth:
+    type: bearer
+    token: mofongo
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
