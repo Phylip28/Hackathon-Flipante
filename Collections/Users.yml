@@ -1,0 +1,16 @@
+info:
+  name: Users
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: http://hpecds.comnetconsultores.cloud:7373/api/users
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
