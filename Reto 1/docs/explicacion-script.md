@@ -1,9 +1,8 @@
-# La Chocita — Cómo lo resolvimos (v2)
+# Explicación del script de solución
 
-Este documento explica cómo pasamos del CSV de conexiones a la respuesta final: qué diez
-figuras colocar en la zona VIP para alcanzar a la mayor cantidad de gente distinta.
+Este documento explica el procesamiento aplicado al CSV de conexiones obtenido del endpoint follows del reto: ¿Cuáles y cuántos usuarios colocar en la zona VIP para alcanzar a la mayor cantidad de gente distinta?
 
-## Qué nos pedían
+## Condiciones del ejercicio
 
 Elegir **de 5 a 10 figuras** con dos condiciones:
 
