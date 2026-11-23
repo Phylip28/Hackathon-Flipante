@@ -16,7 +16,7 @@ Para ello nos disponen de una página con los datos core de Eidolon, con el fin 
 
 Dirección: http://hpecds.comnetconsultores.cloud:7373/
 
-[inserte imagen]
+    [inserte imagen]
 
 El primer reto que se puede divisar es que no nos dan el endpoint para acceder a los datos de followers, y aparece el mensaje "solo personal autorizado". En cuanto al contenido de los otros 2 endpoints, encontramos que la primera (/api/users) nos da un listado en formato json de los usuarios. Sin embargo solo lista a 500 usuarios, lo cual difiere a la cantidad de usuarios que dice tener Eidolon. La pista de que no son todos los usuarios no las da primeramente el segundo endpoint (/api/users/{id}) en el aparecían más usuarios al colocar un id mayor a 500.
 
@@ -29,7 +29,7 @@ Se dedujo que había que buscar algo en los encabezados al inspeccionar los dist
 
 Tambien debido a que al acceder a la ruta raiz (http://hpecds.comnetconsultores.cloud:7373/) no devolvía una página web sino un json, se tenía la teoría de que la comunicación cliente servidor se hacía mediante una API REST, lo cual fue confirmado al acceder a la ruta /openapi.json que es el esquema estandar de OpenApi:
 
-[Inserte imagen]
+    [Inserte imagen]
 
 De aquí observamos cosas interezantes:
 
@@ -46,7 +46,40 @@ Como se dijo en la fase anterior, para poder darle una inspeccion completa a tod
 **Fase de extracción de los usuarios**
 Para esta fase implementamos el script /scripts/extracción_usuarios.py que basicamente lo que hace es tomar el ID y el username de cada usuario y meterlos a un CSV con el nombre de usuarios.csv para realizarle un análisis. El principal hallazgo encontrado es que al viajar a la ultima celda en donde se encuentra el id 80600, no damos cuenta que pertenece a la fila 80593 que, sin contar la primera celda en donde están los campos **(id, username)** da un total de 8 filas extraviadas.
 
-[inserte imágen]
+    [inserte imágen]
 
+### Identificación de los 8 IDs faltantes
+Para saber que filas faltan en la lista de usuarios se ejecutó un análisis de integridad sobre usuarios.csv para detectar saltos en la numeración consecutiva del 1 al 80600, todo esto mediante el script **/conteo.py**, el resultado fue el siguiente:
+
+IDs faltantes: [1037, 21952, 32775, 42083, 60579, 78402, 78890, 79291]
+
+Con esto se comprueba que en la lista faltan estos 8 IDs. Para saber el porqué no aparecen, inspeccionamos lo que devuelve el endpoint **/api/users/{id}** con estas IDs.
+
+El resultado de esta inspección reveló que en el acceso a estos usuarios está restringido, en vez de **Id** y **username** aparece el mensaje:
+
+{"error":"Acreditación de staff. Datos restringidos."}
+
+Sin embargo gracias a la segunda pista se encontró que al inspeccionar los encabezados se encontró el siguiente valor:
+
+    inserte imagen response headers
+
+Se puede observar que el en la parte del final del header existe un valor que aparenta ser un pedazo de código de 8 en total. Al revisarlo y ordenarlo según su posición encontramos los siguientes códigos, el "b64" en el codigo indica que probablemente sea un código codificado en base64:
+
+1/8;b64=L2xhLW
+2/8;b64=Nob2Np
+3/8;b64=dGEvYW
+4/8;b64=NjZXNv
+5/8;b64=LTdrMT
+6/8;b64=A1bDdh
+7/8;b64=MmF4cj
+8/8;b64=V1emg=
+
+Uniendo todos los fracmentos, encontramos el siguiente código: **L2xhLWNob2NpdGEvYWNjZXNvLTdrMTA1bDdhMmF4cjV1emg=**. Al decodificar el código mediante un decodificador de base64 web nos revela el siguiente endpoint:
+
+**/la-chocita/acceso-7k105l7a2axr5uzh**
+
+En el endpoint aparece el siguiente contenido:
+
+    Inserte imagen
 
 
