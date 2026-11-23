@@ -37,5 +37,16 @@ De aquí observamos cosas interezantes:
 * Solo aparecen 3 rutas que tienen habilitado solo el método GET los cuales son: "/", "/api/users" y "/api/users/{user_id}". Esto es importante porque acá no se menciona de otro endpoint relacionado con followers, como se indica en la raíz.
 * Tambien estan las reglas y limites en la paginación, lo cual explica el porque solo cargan 500 usuarios cuando se utiliza el endpoint /api/users.
 
-### extracción de datos y detección de anomalías
-Como se dijo en la fase anterior, para poder darle una inspeccion completa a todos los usuarios, necesitariamos de una automatización,
+### Extracción de datos y detección de anomalías
+Como se dijo en la fase anterior, para poder darle una inspeccion completa a todos los usuarios, necesitariamos de una automatización. La automatización consta de 2 fases. 
+
+* Realizar un script de python que permita extraer todos los usuarios y cargarlos dentro de .csv
+* realizar un conteo de todos los usuarios en el .csv para verificar que no falta ninguno
+
+**Fase de extracción de los usuarios**
+Para esta fase implementamos el script /scripts/extracción_usuarios.py que basicamente lo que hace es tomar el ID y el username de cada usuario y meterlos a un CSV con el nombre de usuarios.csv para realizarle un análisis. El principal hallazgo encontrado es que al viajar a la ultima celda en donde se encuentra el id 80600, no damos cuenta que pertenece a la fila 80593 que, sin contar la primera celda en donde están los campos **(id, username)** da un total de 8 filas extraviadas.
+
+[inserte imágen]
+
+
+
