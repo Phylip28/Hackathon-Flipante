@@ -16,7 +16,7 @@ Para ello nos disponen de una página con los datos core de Eidolon, con el fin 
 
 Dirección: http://hpecds.comnetconsultores.cloud:7373/
 
-    [inserte imagen]
+!{Endpoint raiz}(assets/Rura raiz y endpoints.png)
 
 El primer reto que se puede divisar es que no nos dan el endpoint para acceder a los datos de followers, y aparece el mensaje "solo personal autorizado". En cuanto al contenido de los otros 2 endpoints, encontramos que la primera (/api/users) nos da un listado en formato json de los usuarios. Sin embargo solo lista a 500 usuarios, lo cual difiere a la cantidad de usuarios que dice tener Eidolon. La pista de que no son todos los usuarios no las da primeramente el segundo endpoint (/api/users/{id}) en el aparecían más usuarios al colocar un id mayor a 500.
 
