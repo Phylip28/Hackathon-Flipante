@@ -61,7 +61,7 @@ El resultado de esta inspección reveló que en el acceso a estos usuarios está
 
 Sin embargo gracias a la segunda pista se encontró que al inspeccionar los encabezados se encontró el siguiente valor:
 
-    inserte imagen response headers
+<img src="assets/response headers.png" alt="Response header" />
 
 Se puede observar que el en la parte del final del header existe un valor que aparenta ser un pedazo de código de 8 en total. Al revisarlo y ordenarlo según su posición encontramos los siguientes códigos, el "b64" en el codigo indica que probablemente sea un código codificado en base64:
 
@@ -80,7 +80,7 @@ Uniendo todos los fracmentos, encontramos el siguiente código: **L2xhLWNob2NpdG
 
 En el endpoint aparece el siguiente contenido:
 
-    Inserte imagen
+<img src="assets/RespuestaNuevoEndpoint.png" alt="Nuevo endpoint" />
 
 ### Resolución del acertijo y descubrimiento de credenciales
 Al inspeccionar /la-chocita/acceso-7k105l7a2axr5uzh, se encontraron 3 elementos clave:
@@ -118,8 +118,7 @@ Para verificar que sí es la contraseña correcta, nos comunicamos con la págin
 
 Esta fue la respuesta del servidor 
 
-    [AutenticationResponse]
-
+<img src="assets/Authentication-response.png" alt="Nuevo endpoint" />
 
 Nos entrega el siguiente endpoint:
 
@@ -129,6 +128,6 @@ Al aplicar el mismo comando con este endpoint, el servidor empieza a arrojar los
 
 [curl -X GET http://hpecds.comnetconsultores.cloud:7373/la-chocita/acceso-7k105l7a2axr5uzh/follows -H "Authorization: Bearer mofongo"]
 
-    [Followers data]
+<img src="assets/followes-data.png" alt="Nuevo endpoint" />
 
 
