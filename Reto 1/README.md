@@ -16,7 +16,7 @@ Para ello nos disponen de una página con los datos core de Eidolon, con el fin 
 
 Dirección: http://hpecds.comnetconsultores.cloud:7373/
 
-!{Endpoint raiz}(assets/Rura raiz y endpoints.png)
+<img src="assets/Rura raiz y endpoints.png" alt="Endpoint raiz" />
 
 El primer reto que se puede divisar es que no nos dan el endpoint para acceder a los datos de followers, y aparece el mensaje "solo personal autorizado". En cuanto al contenido de los otros 2 endpoints, encontramos que la primera (/api/users) nos da un listado en formato json de los usuarios. Sin embargo solo lista a 500 usuarios, lo cual difiere a la cantidad de usuarios que dice tener Eidolon. La pista de que no son todos los usuarios no las da primeramente el segundo endpoint (/api/users/{id}) en el aparecían más usuarios al colocar un id mayor a 500.
 
@@ -29,7 +29,7 @@ Se dedujo que había que buscar algo en los encabezados al inspeccionar los dist
 
 Tambien debido a que al acceder a la ruta raiz (http://hpecds.comnetconsultores.cloud:7373/) no devolvía una página web sino un json, se tenía la teoría de que la comunicación cliente servidor se hacía mediante una API REST, lo cual fue confirmado al acceder a la ruta /openapi.json que es el esquema estandar de OpenApi:
 
-    [Inserte imagen]
+<img src="assets/Curl-openapi.json.png" alt="Openapi.json" />
 
 De aquí observamos cosas interezantes:
 
@@ -46,7 +46,7 @@ Como se dijo en la fase anterior, para poder darle una inspeccion completa a tod
 **Fase de extracción de los usuarios**
 Para esta fase implementamos el script /scripts/extracción_usuarios.py que basicamente lo que hace es tomar el ID y el username de cada usuario y meterlos a un CSV con el nombre de usuarios.csv para realizarle un análisis. El principal hallazgo encontrado es que al viajar a la ultima celda en donde se encuentra el id 80600, no damos cuenta que pertenece a la fila 80593 que, sin contar la primera celda en donde están los campos **(id, username)** da un total de 8 filas extraviadas.
 
-    [inserte imágen]
+<img src="assets/usuariosFaltantes.png" alt="Usuarios" />
 
 ### Identificación de los 8 IDs faltantes
 Para saber que filas faltan en la lista de usuarios se ejecutó un análisis de integridad sobre usuarios.csv para detectar saltos en la numeración consecutiva del 1 al 80600, todo esto mediante el script **/conteo.py**, el resultado fue el siguiente:
