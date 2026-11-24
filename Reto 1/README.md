@@ -65,14 +65,14 @@ Sin embargo gracias a la segunda pista se encontró que al inspeccionar los enca
 
 Se puede observar que el en la parte del final del header existe un valor que aparenta ser un pedazo de código de 8 en total. Al revisarlo y ordenarlo según su posición encontramos los siguientes códigos, el "b64" en el codigo indica que probablemente sea un código codificado en base64:
 
-1/8;b64=L2xhLW
-2/8;b64=Nob2Np
-3/8;b64=dGEvYW
-4/8;b64=NjZXNv
-5/8;b64=LTdrMT
-6/8;b64=A1bDdh
-7/8;b64=MmF4cj
-8/8;b64=V1emg=
+* 1/8;b64=L2xhLW
+* 2/8;b64=Nob2Np
+* 3/8;b64=dGEvYW
+* 4/8;b64=NjZXNv
+* 5/8;b64=LTdrMT
+* 6/8;b64=A1bDdh
+* 7/8;b64=MmF4cj
+* 8/8;b64=V1emg=
 
 Uniendo todos los fracmentos, encontramos el siguiente código: **L2xhLWNob2NpdGEvYWNjZXNvLTdrMTA1bDdhMmF4cjV1emg=**. Al decodificar el código mediante un decodificador de base64 web nos revela el siguiente endpoint:
 
@@ -81,5 +81,54 @@ Uniendo todos los fracmentos, encontramos el siguiente código: **L2xhLWNob2NpdG
 En el endpoint aparece el siguiente contenido:
 
     Inserte imagen
+
+### Resolución del acertijo y descubrimiento de credenciales
+Al inspeccionar /la-chocita/acceso-7k105l7a2axr5uzh, se encontraron 3 elementos clave:
+
+* Un acertijo en el texto "Solo staff. La contraseña es la comida favorita del cantante JP Miracorta".
+* Una pista visual con la frase "**potenciasde5**"
+* Esquema de autenticación en cabeceras: www-authenticate: Bearer realm="La Chocita".
+
+En cuanto al elemento 2 la pista es clara, hay que buscar en las IDs que sean potencia de 5, y juntandolo con el elemento 1, lo más probable es que haya alguna pista oculta en esas potencias de 5 para descubrir cuál es la comida favorita de J.P Miracorta. Y en cuanto al esquema de autenticación, investigando nos dimos cuenta que hace parte del protocolo HTTP (RFC 7235), que define el marco de autenticación para el protocolo HTTP/1.1. Este marco indica lo siguiente 
+
+Cabeceras de autenticación:
+* WWW-Authenticate: Enviada por el servidor en una respuesta 401.
+* Authorization: Enviada por el cliente para proveer sus credenciales.
+
+La respuesta de **Authorization** está estructurada de la siguiente forma:
+
+Authenticate: <ESQUEMA> <TOKEN>
+
+En el header nos dice que el **esquema** para poder proveer las credenciales es **Bearer**. El token, debe ser la contraseña que debemos decifrar mediante los otros 2 elementos, que referente a esto, encontramos las siguientes IDs potencia de 5.
+
+* 5¹ (5): marta.ruiz 
+* 5² (25): olga0rtiz 
+* 5³ (125): fabiola.lopez
+* 5⁴ (625): ofelia.g 
+* 5⁵ (3125): noelia.medina
+* 5⁶ (15625): gema.iglesias 
+* 5⁷ (78125): olivia.perez
+
+Nos percatamos que la palabra secreta es **mofongo**, esto se logró al juntar todas las letras iniciales de cada ID potencia, y al relacionarlo con la pista de la comida favorita de JP Miracorta, resulta que el mofongo es una comida tradicional en la república dominicana. 
+
+#### Respuesta del cliente con la autenticación
+Para verificar que sí es la contraseña correcta, nos comunicamos con la página mediante el comando curl usando el método get con una flag que permite enviar la autenticación:
+
+[curl -X GET http://hpecds.comnetconsultores.cloud:7373/la-chocita/acceso-7k105l7a2axr5uzh -H "Authorization: Bearer mofongo"]
+
+Esta fue la respuesta del servidor 
+
+    [AutenticationResponse]
+
+
+Nos entrega el siguiente endpoint:
+
+**{"mensaje":"Bienvenido a La Chocita.","follows":"/la-chocita/acceso-7k105l7a2axr5uzh/follows"}**
+
+Al aplicar el mismo comando con este endpoint, el servidor empieza a arrojar los datos:
+
+[curl -X GET http://hpecds.comnetconsultores.cloud:7373/la-chocita/acceso-7k105l7a2axr5uzh/follows -H "Authorization: Bearer mofongo"]
+
+    [Followers data]
 
 
