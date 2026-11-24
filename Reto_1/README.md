@@ -130,4 +130,6 @@ Al aplicar el mismo comando con este endpoint, el servidor empieza a arrojar los
 
 <img src="assets/followes-data.png" alt="Nuevo endpoint" />
 
+### Extracción y resolución del problema
+Para la extracción de los followers se empleará el script de python **extracción_followers.py** que basicamente lo que hace es obtener los datos del endpoint follows y guardarlos en un .csv llamado **follows.csv**
 
